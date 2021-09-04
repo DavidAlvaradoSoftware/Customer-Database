@@ -36,7 +36,7 @@ def main():
     tabs = ttk.Notebook(root)
     tabs.grid(row=0, column=0)
 
-    add_customer_menu = AddCustomer(root)
+    add_customer_menu = AddCustomer(root, database_location)
     tabs.add(add_customer_menu.get_frame(), text="Add Customer")
 
     root.mainloop()
