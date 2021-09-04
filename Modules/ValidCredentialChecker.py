@@ -52,7 +52,7 @@ class CheckCredentials:
         return result
 
     def invalid_phone_number_check(self):
-        phone_number = self.customer_credential_array[2]
+        phone_number = self.customer_credential_array[2].get()
 
         if len(phone_number) != 10:
             return True
@@ -63,7 +63,7 @@ class CheckCredentials:
             return True
 
     def invalid_state_check(self):
-        state = self.customer_credential_array[6]
+        state = self.customer_credential_array[6].get()
         allowed_characters = re.compile('[A-Z]')
         if len(state) != 2:
             return True
@@ -74,7 +74,7 @@ class CheckCredentials:
                 return False
 
     def invalid_zip_code_check(self):
-        zip_code = self.customer_credential_array[7]
+        zip_code = self.customer_credential_array[7].get()
 
         if len(zip_code) != 5:
             return True
