@@ -4,6 +4,7 @@ from PIL import ImageTk, Image
 import sqlite3
 import os
 from Modules.AddCustomer import AddCustomer
+from Modules.ExistingCustomer import ExistingCustomer
 
 database_location = os.getcwd() + "\\Database\\people.db"
 
@@ -14,11 +15,11 @@ if not (os.path.isfile(database_location)):
     cursor.execute("""CREATE TABLE customer (
                 f_name TEXT,
                 l_name TEXT,
-                phone INTEGER,
+                phone TEXT,
                 street TEXT,
                 city TEXT,
                 state TEXT,
-                zipcode INT,
+                zipcode TEXT,
                 email TEXT,
                 invoice_location TEXT
                 )""")
@@ -38,6 +39,9 @@ def main():
 
     add_customer_menu = AddCustomer(root, database_location)
     tabs.add(add_customer_menu.get_frame(), text="Add Customer")
+
+    add_existing_customer_menu = ExistingCustomer(root, database_location)
+    tabs.add(add_existing_customer_menu.get_frame(), text="Existing Customer")
 
     root.mainloop()
 

@@ -5,7 +5,7 @@ from tkinter import messagebox
 class CheckCredentials:
     def __init__(self, credential_textbox_array):
         self.credential_check_results = [None] * 5
-        self.types_of_checks = ["Empty Textboxes", "Special Characters",
+        self.types_of_checks = ["Empty Text boxes", "Special Characters",
                                 "Invalid Phone Number", "Invalid State",
                                 "Invalid Zip Code"]
         self.customer_credential_array = credential_textbox_array
