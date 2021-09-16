@@ -20,7 +20,6 @@ class AddCustomer:
         # Customer information labels and Text boxes
         self.customer_credentials_labels = [None] * 8
         self.customer_credential_label_initialization()
-
         self.customer_credentials_textboxes = [None] * 8
         self.customer_credentials_textboxes_initialization()
 
@@ -29,7 +28,6 @@ class AddCustomer:
                                           bg='#5FC663', height=1, width=50,
                                           command=self.add_customer_to_database)
         self.add_customer_button.grid(row=11, column=1, columnspan=2, pady=(0, 10))
-
         self.clear_fields_button = Button(self.add_customer_tab_frame, text="Clear Textboxes",
                                           command=self.clear_textboxes)
         self.clear_fields_button.grid(row=10, column=2, pady=10)
@@ -65,7 +63,8 @@ class AddCustomer:
         # If the result = True, Then it passed. If result = False, it failed.
         self.disable_text_boxes()
         result = CheckCredentials(self.customer_credentials_textboxes)
-        if result is False:
+
+        if result.full_check() is False:
             messagebox.showerror("Unable to add customer", "Unable to add customer.")
             self.enable_text_boxes()
         else:
@@ -73,7 +72,8 @@ class AddCustomer:
             self.clear_fields_button.configure(state="disabled")
 
             # If true, the phone number exists, if false, it does not exist.
-            if not self.does_phone_number_exists():
+
+            if self.does_phone_number_exists() is not True:
                 if not self.does_customer_already_exists():
                     customer_folder_location = os.getcwd() + "\\Customers\\" + \
                                                self.customer_credentials_textboxes[1].get() + " " + \
@@ -100,16 +100,16 @@ class AddCustomer:
                                     'f_name': self.customer_credentials_textboxes[0].get(),
                                     'l_name': self.customer_credentials_textboxes[1].get(),
                                     'phone': self.customer_credentials_textboxes[2].get(),
-                                    'street': self.customer_credentials_textboxes[4].get(),
-                                    'city': self.customer_credentials_textboxes[5].get(),
-                                    'state': self.customer_credentials_textboxes[6].get(),
-                                    'zipcode': self.customer_credentials_textboxes[7].get(),
-                                    'email': self.customer_credentials_textboxes[3].get(),
+                                    'street': self.customer_credentials_textboxes[3].get(),
+                                    'city': self.customer_credentials_textboxes[4].get(),
+                                    'state': self.customer_credentials_textboxes[5].get(),
+                                    'zipcode': self.customer_credentials_textboxes[6].get(),
+                                    'email': self.customer_credentials_textboxes[7].get(),
                                     'invoice_location': customer_folder_location
-
                                 })
+
                             connection.commit()
-                            cursor.execute("SELECT oid, * FROM customer")
+                            cursor.execute("SELECT * FROM customer")
                             print(cursor.fetchall())
 
                             connection.close()
@@ -120,14 +120,15 @@ class AddCustomer:
                             self.clear_fields_button.configure(state="normal")
                             messagebox.showinfo(title="Success", message="Customer successfully added")
                         except Exception as error:
-                            print('Error when adding customer to database')
-                            print(error)
-                else:
-                    messagebox.showerror("Customer already in database",
-                                         "A customer with the same phone number is in the database")
-                    self.enable_text_boxes()
-                    self.add_customer_button.configure("normal")
-                    self.clear_fields_button.configure("normal")
+                            messagebox.showerror("Error adding customer", "Error when adding customer to database"
+                                                 + error)
+
+            else:
+                messagebox.showerror("Customer already in database",
+                                     "A customer with the same phone number is in the database")
+                self.enable_text_boxes()
+                self.add_customer_button.configure(state="normal")
+                self.clear_fields_button.configure(state="normal")
 
     def does_customer_already_exists(self):
         connection = sqlite3.connect(self.database_location)

@@ -8,26 +8,9 @@ from Modules.ExistingCustomer import ExistingCustomer
 
 database_location = os.getcwd() + "\\Database\\people.db"
 
-if not (os.path.isfile(database_location)):
-    conn = sqlite3.connect(database_location)
-    cursor = conn.cursor()
-
-    cursor.execute("""CREATE TABLE customer (
-                f_name TEXT,
-                l_name TEXT,
-                phone TEXT,
-                street TEXT,
-                city TEXT,
-                state TEXT,
-                zipcode TEXT,
-                email TEXT,
-                invoice_location TEXT
-                )""")
-    conn.commit()
-    conn.close()
-
 
 def main():
+    create_directories()
     root = Tk()
     screen_width = str(root.winfo_screenwidth())
     screen_height = str(root.winfo_screenheight())
@@ -44,6 +27,55 @@ def main():
     tabs.add(add_existing_customer_menu.get_frame(), text="Existing Customer")
 
     root.mainloop()
+
+
+def create_directories():
+    try:
+        os.makedirs(os.getcwd() + "\\Customers")
+        os.makedirs(os.getcwd() + "\\Old Customers")
+        os.makedirs(os.getcwd() + "\\Database")
+
+        if not (os.path.isfile(database_location)):
+            connection = sqlite3.connect(database_location)
+            cursor = connection.cursor()
+
+            cursor.execute("""CREATE TABLE customer (
+                        f_name TEXT,
+                        l_name TEXT,
+                        phone TEXT,
+                        street TEXT,
+                        city TEXT,
+                        state TEXT,
+                        zipcode TEXT,
+                        email TEXT,
+                        invoice_location TEXT
+                        )""")
+            connection.commit()
+            connection.close()
+
+
+    except Exception as e:
+        # Do nothing
+        print(e)
+        pass
+    else:
+        if not (os.path.isfile(database_location)):
+            connection = sqlite3.connect(database_location)
+            cursor = connection.cursor()
+
+            cursor.execute("""CREATE TABLE customer (
+                        f_name TEXT,
+                        l_name TEXT,
+                        phone TEXT,
+                        street TEXT,
+                        city TEXT,
+                        state TEXT,
+                        zipcode TEXT,
+                        email TEXT,
+                        invoice_location TEXT
+                        )""")
+            connection.commit()
+            connection.close()
 
 
 if __name__ == "__main__":

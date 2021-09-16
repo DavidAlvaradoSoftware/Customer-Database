@@ -10,7 +10,9 @@ class CheckCredentials:
                                 "Invalid Zip Code"]
         self.customer_credential_array = credential_textbox_array
 
-        self.full_check()
+    def print_customer_credentials(self):
+        for credential in range(len(self.customer_credential_array)):
+            print(str(credential) + self.customer_credential_array[credential].get())
 
     def full_check(self):
         self.credential_check_results[0] = self.is_any_textbox_empty()
@@ -27,7 +29,7 @@ class CheckCredentials:
                 break
 
         if failed_check is True:
-            self.show_error(self.types_of_checks, result)
+            self.show_error(result)
             return False
         else:
             return True
@@ -61,9 +63,11 @@ class CheckCredentials:
             int(phone_number)
         except ValueError:
             return True
+        else:
+            return False
 
     def invalid_state_check(self):
-        state = self.customer_credential_array[6].get()
+        state = self.customer_credential_array[5].get()
         allowed_characters = re.compile('[A-Z]')
         if len(state) != 2:
             return True
@@ -74,7 +78,7 @@ class CheckCredentials:
                 return False
 
     def invalid_zip_code_check(self):
-        zip_code = self.customer_credential_array[7].get()
+        zip_code = self.customer_credential_array[6].get()
 
         if len(zip_code) != 5:
             return True
@@ -86,8 +90,8 @@ class CheckCredentials:
             else:
                 return False
 
-    def show_error(self, types_of_errors, result):
-        messagebox.showerror(types_of_errors[result], "An error occured when checking customer credentials."
-                                                      "Type of error: " + types_of_errors[result] +
-                                                      " make sure you follow the layout stated near "
-                                                      "the empty text boxes.")
+    def show_error(self, result):
+        messagebox.showerror(self.types_of_checks[result], "An error occured when checking customer credentials."
+                                                           "Type of error: " + self.types_of_checks[result] +
+                             " (make sure you follow the layout stated near "
+                             "the empty text boxes.)")
